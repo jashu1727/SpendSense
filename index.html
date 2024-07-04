@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPENDSENSE</title>
+  <link rel="stylesheet" href="finalcss.css">
+  <script defer src="finalscript.js"></script>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>SPENDSENSE</h1>
+    <form id="budget-form">
+      <div class="form-group">
+        <label for="budget">Enter Your Monthly Budget:</label>
+        <input type="number" id="budget" name="budget" placeholder="Enter your budget">
+      </div>
+      <div class="form-group">
+        <label for="category">Select Category:</label>
+        <select id="category" name="category">
+          <option value="food">Food</option>
+          <option value="transportation">Transportation/Fuel</option>
+          <option value="housing">Housing</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="shopping">Shopping</option>
+          <option value="bills">Bills</option>
+          <option value="fees">Fees</option>
+          <option value="other">Miscellaneous</option>
+        </select>
+      </div>
+      <button type="button" onclick="submitBudget()">Submit</button>
+    </form>
+    <div class="results">
+      <p id="result"></p>
+    </div>
+  </div>
+</body>
+</html>
