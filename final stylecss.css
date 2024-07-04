@@ -1,0 +1,69 @@
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #00c6ff, #0072ff); /* Gradient background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Container styles */
+.container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Heading styles */
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #0072ff;
+}
+
+/* Form element styles */
+label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+input, select, button {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 0 auto 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Input and select field styles */
+input:focus, select:focus {
+    outline: none;
+    border-color: #0072ff;
+    box-shadow: 0 0 5px rgba(0, 114, 255, 0.5);
+}
+
+/* Button styles */
+button {
+    background-color: #0072ff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
