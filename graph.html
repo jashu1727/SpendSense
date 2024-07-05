@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expenditure Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-image: linear-gradient(180deg, #2996ff, #349bff, #40a1ff);
+      font-family: 'Arial', sans-serif;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      z-index: -1;
+    }
+    .container {
+      background-image: linear-gradient(180deg, #1e90ff, #8ec8ff, #f4f9ff);
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 800px;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #343a40;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .form-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .category {
+      flex: 1 1 calc(33.33% - 10px);
+      margin-bottom: 15px;
+    }
+    .category label {
+      display: block;
+      margin-bottom: 5px;
+      color: #495057;
+      font-weight: bold;
+    }
+    .category input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    .category input[type="text"]:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .graph {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .graph canvas {
+      width: 50% !important;
+      height: auto !important;
+    }
+    /* Add media queries for responsiveness */
+    @media only screen and (max-width: 768px) {
+      .container {
+        width: 90%;
+        max-width: 600px;
+      }
+      .form-grid {
+        flex-direction: column;
+      }
+      .category {
+        flex: 1 1 100%;
+      }
+      .graph {
+        margin-top: 10px;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container {
+        width: 90%;
+        max-width: 400px;
+      }
+      .graph {
+        margin-top: 5px;
+      }
+      .category {
+        margin-bottom: 10px;
+      }
+      .category label {
+        font-size: 14px;
+      }
+      .category input[type="text"] {
+        padding: 6px;
+      }
+      button {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>SPENDSENSE</h1>
+    <form>
+      <div class="form-grid">
+        <div class="category">
+          <label for="food">Groceries</label>
+          <input type="text" id="food" value="0">
+        </div>
+        <div class="category">
+          <label for="transportation">Entertainment</label>
+          <input type="text" id="transportation" value="0">
+        </div>
+        <div class="category">
+          <label for="housing">Bills</label>
+          <input type="text" id="housing" value="0">
+        </div>
+        <div class="category">
+          <label for="entertainment">EMI/Loans</label>
+          <input type="text" id="entertainment" value="0">
+        </div>
+        <div class="category">
+          <label for="shopping">Shopping</label>
+          <input type="text" id="shopping" value="0">
+        </div>
+        <div class="category">
+          <label for="other">Other</label>
+          <input type="text" id="other" value="0">
+        </div>
+      </div>
+      <button type="button" onclick="updateGraph()">Update Graph</button>
+    </form>
+    <div class="graph">
+      <canvas id="expenditure-graph"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const categories = [
+      { id: "food", label: "Groceries" },
+      { id: "transportation", label: "Entertainment" },
+      { id: "housing", label: "Bills" },
+      { id: "entertainment", label: "EMI/Loans" },
+      { id: "shopping", label: "Shopping" },
+      { id: "other", label: "Other" }
+    ];
+
+    const graphCanvas = document.getElementById("expenditure-graph");
+    const graphCtx = graphCanvas.getContext("2d");
+    let expenditureChart;
+
+    function updateGraph() {
+      const expenditures = categories.map(category => ({
+        label: category.label,
+        value: parseInt(document.getElementById(category.id).value)
+      }));
+
+      const graphData = {
+        labels: expenditures.map(expenditure => expenditure.label),
+        datasets: [{
+          label: "Expenditures",
+          data: expenditures.map(expenditure => expenditure.value),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)", 
+            "rgba(54, 162, 235, 0.2)", 
+            "rgba(255, 206, 86, 0.2)", 
+            "rgba(75, 192, 192, 0.2)", 
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(201, 203, 207, 0.2)"
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)", 
+            "rgba(54, 162, 235, 1)", 
+            "rgba(255, 206, 86, 1)", 
+            "rgba(75, 192, 192, 1)", 
+            "rgba(153, 102, 255, 1)",
+            "rgba(201, 203, 207, 1)"
+          ],
+          borderWidth: 1
+        }]
+      };
+
+      if (expenditureChart) {
+        expenditureChart.destroy();
+      }
+
+      expenditureChart = new Chart(graphCtx, {
+        type: "doughnut",
+        data: graphData,
+        options: {
+          title: {
+            display: true,
+            text: "Expenditures"
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
